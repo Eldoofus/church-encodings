@@ -55,7 +55,7 @@ printChI :: ChI -> IO ()
 printChI = \i -> print $ chItoHsI i
 
 oneZ :: ChI -> ChI
-oneZ = \i -> (greq (first i) (scnd i)) id neg $ pair (minus (first i) (scnd i)) zero
+oneZ = \i -> pair ((greq (first i) (scnd i)) (minus (first i) (scnd i)) zero) ((greq (first i) (scnd i)) zero (minus (scnd i) (first i)))
 
 chI :: Integer -> ChI
 chI i = if i < 0 then neg (chI $ -i) else chNtoChI $ chN i

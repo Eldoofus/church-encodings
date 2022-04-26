@@ -1,4 +1,4 @@
-{-# LANGUAGE ImpredicativeTypes #-}
+{-# LANGUAGE ImpredicativeTypes, TypeApplications #-}
 module ChurchRats where
 import Prelude(fromIntegral, Integer, Double, IO, (/), ($), print)
 import ChurchBools
@@ -8,12 +8,11 @@ import ChurchPairs
 import ChurchInts
 
 {-Church Rational Type-}
-type ChQ = ChP ChI ChN
-newtype ChR = R { unR :: ChQ }
+type ChR = (ChI -> ChI -> ChI) -> ChI
 
 {-Church Rationals-}
 zeroR :: ChR
-zeroR = R $ pair zeroI zero
+zeroR = pair zeroI zeroI
 
 {-Church Rational Operators-}
 plusR :: ChR -> ChR -> ChR
@@ -21,10 +20,10 @@ plusR = \r s -> r
 
 {-Church Rational Utilities-}
 red :: ChR -> ChR
-red = \r -> (\q -> R $ pair (divI (first $ unR r) q) (div (scnd $ unR r) (first $ unI $ abs q))) $ gcdI (abs $ first $ unR r) (chNtoChI $ scnd $ unR r)
+red = \r -> pair (divI (first r) $ gcdI (abs $ first r) (abs $ scnd r)) (divI (scnd r) (gcdI (abs $ first r) (abs $ scnd r)))
 
 chRtoHsD :: ChR -> Double
-chRtoHsD = \r -> (fromIntegral $ chItoHsI $ first $ unR r) / (fromIntegral $ chNtoHsI $ scnd $ unR r)
+chRtoHsD = \r -> (fromIntegral $ chItoHsI $ first r) / (fromIntegral $ chItoHsI $ scnd r)
 
 printChR :: ChR -> IO ()
 printChR = \r -> print $ chRtoHsD r
