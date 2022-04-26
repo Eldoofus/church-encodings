@@ -1,14 +1,13 @@
 {-# LANGUAGE ImpredicativeTypes #-}
 module ChurchInts where
 import Prelude(Integer, IO, ($), print, (-), map, (<), (!!))
-import Data.Typeable
 import ChurchBools
 import ChurchCombs
 import ChurchNats
 import ChurchPairs
 
 {-Church Integer Type-}
-type ChI = forall a. (ChN -> ChN -> ChN) -> ChN
+type ChI = (ChN -> ChN -> ChN) -> ChN
 
 {-Church Integers-}
 zeroI :: ChI
@@ -28,13 +27,13 @@ minusI :: ChI -> ChI -> ChI
 minusI = \i j -> pair (plus (first i) (scnd j)) (plus (scnd i) (first j))
 
 multI :: ChI -> ChI -> ChI
-multI = \i j -> (\a b c d -> pair (plus (mult a c) (mult b d)) (plus (mult a d) (mult b c))) (first i) (scnd i) (first j) (scnd j)
+multI = \i j -> pair (plus (mult (first i) (first j)) (mult (scnd i) (scnd j))) (plus (mult (first i) (scnd j)) (mult (scnd i) (first j)))
 
 divZ :: ChN -> ChN -> ChN
 divZ = \n m -> iszero m zero $ div n m
 
 divI :: ChI -> ChI -> ChI
-divI = \i j -> (\a b c d -> pair (plus (divZ a c) (divZ b d)) (plus (divZ a d) (divZ b c))) (first $ oneZ i) (scnd $ oneZ i) (first $ oneZ j) (scnd $ oneZ j)
+divI = \i j -> pair (plus (divZ (first $ oneZ i) (first $ oneZ j)) (divZ (scnd $ oneZ i) (scnd $ oneZ j))) (plus (divZ (first $ oneZ i) (scnd $ oneZ j)) (divZ (scnd $ oneZ i) (first $ oneZ j)))
 
 modI :: ChI -> ChI -> ChI
 modI = \i j -> minusI i $ multI j $ divI i j
@@ -43,7 +42,7 @@ gcdI :: ChI -> ChI -> ChI
 gcdI = y $ \c i j -> equlI i zeroI j $ c (modI j i) i
 
 neg :: ChI -> ChI
-neg = \i -> pair (scnd $ unI i) (first $ unI i)
+neg = \i -> pair (scnd i) (first i)
 
 {-Church Integral Untilities-}
 chNtoChI :: ChN -> ChI
@@ -56,7 +55,7 @@ printChI :: ChI -> IO ()
 printChI = \i -> print $ chItoHsI i
 
 oneZ :: ChI -> ChI
-oneZ = \i -> (greq (first i) (scnd i)) (\a b p -> p a b) (\a b p -> p b a) (minus (first i) (scnd i)) zero
+oneZ = \i -> (greq (first i) (scnd i)) id neg $ pair (minus (first i) (scnd i)) zero
 
 chI :: Integer -> ChI
 chI i = if i < 0 then neg (chI $ -i) else chNtoChI $ chN i
