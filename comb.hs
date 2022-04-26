@@ -1,4 +1,4 @@
-{-# LANGUAGE RankNTypes, ImpredicativeTypes #-}
+{-# LANGUAGE ImpredicativeTypes #-}
 module ChurchCombs where
 import Prelude(($), (.))
 

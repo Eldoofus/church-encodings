@@ -1,4 +1,4 @@
-{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE ImpredicativeTypes #-}
 module ChurchInts where
 import Prelude(Integer, IO, ($), print, (-), map, (<), (!!))
 import Data.Typeable

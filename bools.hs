@@ -1,4 +1,4 @@
-{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE ImpredicativeTypes #-}
 module ChurchBools where
 import Prelude(Bool(True, False), IO, ($), print)
 

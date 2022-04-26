@@ -1,4 +1,4 @@
-{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE ImpredicativeTypes #-}
 module ChurchRats where
 import Prelude(fromIntegral, Integer, Double, IO, (/), ($), print)
 import ChurchBools
