@@ -8,34 +8,33 @@ import ChurchNats
 import ChurchPairs
 
 {-Church Integer Type-}
-type ChZ = ChP ChN ChN
-newtype ChI = I { unI :: ChZ }
+type ChI = ChP ChN ChN
 
 {-Church Integers-}
 zeroI :: ChI
-zeroI = I $ pair zero zero
+zeroI = pair zero zero
 
 {-Church Integral Operators-}
 succI :: ChI -> ChI
-succI = \i -> I $ pair (succ $ first $ unI i) (scnd $ unI i)
+succI = \i -> pair (succ $ first i) (scnd i)
 
 plusI :: ChI -> ChI -> ChI
-plusI = \i j -> I $ pair (plus (first $ unI i) (first $ unI j)) (plus (scnd $ unI i) (scnd $ unI j))
+plusI = \i j -> pair (plus (first i) (first j)) (plus (scnd i) (scnd j))
 
 predI :: ChI -> ChI
-predI = \i -> I $ pair (first $ unI i) (succ $ scnd $ unI i)
+predI = \i -> pair (first i) (succ $ scnd i)
 
 minusI :: ChI -> ChI -> ChI
-minusI = \i j -> I $ pair (plus (first $ unI i) (scnd $ unI j)) (plus (scnd $ unI i) (first $ unI j))
+minusI = \i j -> pair (plus (first i) (scnd j)) (plus (scnd i) (first j))
 
 multI :: ChI -> ChI -> ChI
-multI = \i j -> I $ (\a b c d -> pair (plus (mult a c) (mult b d)) (plus (mult a d) (mult b c))) (first $ unI i) (scnd $ unI i) (first $ unI j) (scnd $ unI j)
+multI = \i j -> (\a b c d -> pair (plus (mult a c) (mult b d)) (plus (mult a d) (mult b c))) (first i) (scnd i) (first j) (scnd j)
 
 divZ :: ChN -> ChN -> ChN
 divZ = \n m -> iszero m zero $ div n m
 
 divI :: ChI -> ChI -> ChI
-divI = \i j -> I $ (\a b c d -> pair (plus (divZ a c) (divZ b d)) (plus (divZ a d) (divZ b c))) (first $ unI $ oneZ i) (scnd $ unI $ oneZ i) (first $ unI $ oneZ j) (scnd $ unI $ oneZ j)
+divI = \i j -> (\a b c d -> pair (plus (divZ a c) (divZ b d)) (plus (divZ a d) (divZ b c))) (first $ oneZ i) (scnd $ oneZ i) (first $ oneZ j) (scnd $ oneZ j)
 
 modI :: ChI -> ChI -> ChI
 modI = \i j -> minusI i $ multI j $ divI i j
@@ -44,20 +43,20 @@ gcdI :: ChI -> ChI -> ChI
 gcdI = y $ \c i j -> equlI i zeroI j $ c (modI j i) i
 
 neg :: ChI -> ChI
-neg = \i -> I $ pair (scnd $ unI i) (first $ unI i)
+neg = \i -> pair (scnd $ unI i) (first $ unI i)
 
 {-Church Integral Untilities-}
 chNtoChI :: ChN -> ChI
-chNtoChI = \n -> I $ pair n zero
+chNtoChI = \n -> pair n zero
 
 chItoHsI :: ChI -> Integer
-chItoHsI = \i -> chNtoHsI (first $ unI i) - chNtoHsI (scnd $ unI i)
+chItoHsI = \i -> chNtoHsI (first i) - chNtoHsI (scnd i)
 
 printChI :: ChI -> IO ()
 printChI = \i -> print $ chItoHsI i
 
 oneZ :: ChI -> ChI
-oneZ = \i -> I $ (greq (first $ unI i) (scnd $ unI i)) (\a b p -> p a b) (\a b p -> p b a) (minus (first $ unI i) (scnd $ unI i)) zero
+oneZ = \i -> (greq (first i) (scnd i)) (\a b p -> p a b) (\a b p -> p b a) (minus (first i) (scnd i)) zero
 
 chI :: Integer -> ChI
 chI i = if i < 0 then neg (chI $ -i) else chNtoChI $ chN i
@@ -65,14 +64,14 @@ chI i = if i < 0 then neg (chI $ -i) else chNtoChI $ chN i
 {-Church Integral Functions-}
 
 abs :: ChI -> ChI
-abs = \i -> I $ pair (plus (first $ unI $ oneZ i) (scnd $ unI $ oneZ i)) zero
+abs = \i -> pair (plus (first $ oneZ i) (scnd $ oneZ i)) zero
 
 {-Church Integral Predicates-}
 iszeroI :: ChI -> ChB
-iszeroI = \i -> equl (first $ unI i) (scnd $ unI i)
+iszeroI = \i -> equl (first i) (scnd i)
 
 isNeg :: ChI -> ChB
-isNeg = \i -> less (first $ unI i) (scnd $ unI i)
+isNeg = \i -> less (first i) (scnd i)
 
 {-Church Integral Comparators-}
 greqI :: ChI -> ChI -> ChB
