@@ -69,21 +69,21 @@ neg = \i -> pair (scnd i) (first i)
 iszeroI :: ChI -> ChB
 iszeroI = \i -> equl (first i) (scnd i)
 
-isNeg :: ChI -> ChB
-isNeg = \i -> less (first i) (scnd i)
+isneg :: ChI -> ChB
+isneg = \i -> less (first i) (scnd i)
 
 {-Church Integral Comparators-}
 greqI :: ChI -> ChI -> ChB
-greqI = \i j -> not $ isNeg $ minusI i j
+greqI = \i j -> not $ isneg $ minusI i j
 
 lseqI :: ChI -> ChI -> ChB
-lseqI = \i j -> not $ isNeg $ minusI j i
+lseqI = \i j -> not $ isneg $ minusI j i
 
 lessI :: ChI -> ChI -> ChB
-lessI = \i j -> isNeg $ minusI i j
+lessI = \i j -> isneg $ minusI i j
 
 grtrI :: ChI -> ChI -> ChB
-grtrI = \i j -> isNeg $ minusI j i
+grtrI = \i j -> isneg $ minusI j i
 
 equlI :: ChI -> ChI -> ChB
 equlI = \i j -> iszeroI $ minusI i j

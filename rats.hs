@@ -60,7 +60,7 @@ ceil :: ChR -> ChR
 ceil = \r -> pair (plusI (isint zeroI $ succI zeroI) $ divI (first r) (scnd r)) $ succI zeroI
 
 round :: ChR -> ChR
-round = \r -> floor $ plusR r $ 
+round = \r -> floor $ plusR r $ pair (succI zeroI) $ succI $ succI zeroI
 
 {-Church Rational Predicates-}
 iszeroR :: ChR -> ChB
@@ -77,16 +77,16 @@ isinf = \r -> iszeroI $ scnd r
 
 {-Church Rational Comparators-}
 greqR :: ChR -> ChR -> ChB
-greqR = \q r -> not $ isNegR $ minusR q r
+greqR = \q r -> not $ isnegR $ minusR q r
 
 lseqR :: ChR -> ChR -> ChB
-lseqR = \q r -> not $ isNegR $ minusR r q
+lseqR = \q r -> not $ isnegR $ minusR r q
 
 lessR :: ChR -> ChR -> ChB
-lessR = \q r -> isNegR $ minusR q r
+lessR = \q r -> isnegR $ minusR q r
 
 grtrR :: ChR -> ChR -> ChB
-grtrR = \q r -> isNegR $ minusR r q
+grtrR = \q r -> isnegR $ minusR r q
 
 equlR :: ChR -> ChR -> ChB
 equlR = \q r -> iszeroR $ minusR q r
