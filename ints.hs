@@ -41,9 +41,6 @@ modI = \i j -> minusI i $ multI j $ divI i j
 gcdI :: ChI -> ChI -> ChI
 gcdI = y $ \c i j -> equlI i zeroI j $ c (modI j i) i
 
-neg :: ChI -> ChI
-neg = \i -> pair (scnd i) (first i)
-
 {-Church Integral Untilities-}
 chNtoChI :: ChN -> ChI
 chNtoChI = \n -> pair n zero
@@ -64,6 +61,9 @@ chI i = if i < 0 then neg (chI $ -i) else chNtoChI $ chN i
 
 abs :: ChI -> ChI
 abs = \i -> pair (plus (first $ oneZ i) (scnd $ oneZ i)) zero
+
+neg :: ChI -> ChI
+neg = \i -> pair (scnd i) (first i)
 
 {-Church Integral Predicates-}
 iszeroI :: ChI -> ChB
