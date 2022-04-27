@@ -57,10 +57,10 @@ floor :: ChR -> ChR
 floor = \r -> pair (divI (first r) (scnd r)) $ succI zeroI
 
 ceil :: ChR -> ChR
-ceil = \r -> pair (plusI (isint zeroI $ succI zeroI) $ divI (first r) (scnd r)) $ succI zeroI
+ceil = \r -> pair (plusI (isint r zeroI $ (isnegR r predI succI) zeroI) $ divI (first r) (scnd r)) $ succI zeroI
 
 round :: ChR -> ChR
-round = \r -> floor $ plusR r $ pair (succI zeroI) $ succI $ succI zeroI
+round = \r -> floor $ plusR r $ (isnegR r negR id) $ pair (succI zeroI) $ succI $ succI zeroI
 
 {-Church Rational Predicates-}
 iszeroR :: ChR -> ChB
