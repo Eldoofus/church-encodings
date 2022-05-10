@@ -2,12 +2,15 @@
 module ChurchPairs where
 import Prelude(($))
 
+{-Church Pair Type-}
+type ChP a b = (a -> b -> c) -> c
+
 {-Church Pairs-}
-pair :: a1 -> a2 -> (a1 -> a2 -> a) -> a
+pair :: a -> b -> ChP a b
 pair = \a b p -> p a b
 
-first :: ((a2 -> a1 -> a2) -> a) -> a
+first :: ChP a b -> a
 first = \p -> p $ \a b -> a
 
-scnd :: ((a1 -> a2 -> a2) -> a) -> a
+scnd :: ChP a b -> b
 scnd = \p -> p $ \a b -> b

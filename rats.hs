@@ -8,7 +8,7 @@ import ChurchPairs
 import ChurchInts
 
 {-Church Rational Type-}
-type ChR = (ChI -> ChI -> ChI) -> ChI
+type ChR = ChP ChI ChI
 
 {-Church Rationals-}
 zeroR :: ChR

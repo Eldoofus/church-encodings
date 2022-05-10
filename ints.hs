@@ -7,7 +7,7 @@ import ChurchNats
 import ChurchPairs
 
 {-Church Integer Type-}
-type ChI = (ChN -> ChN -> ChN) -> ChN
+type ChI = ChP ChN ChN
 
 {-Church Integers-}
 zeroI :: ChI
