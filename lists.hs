@@ -1,10 +1,11 @@
-{-# LANGUAGE ImpredicativeTypes #-}
+{-# LANGUAGE ImpredicativeTypes,ScopedTypeVariables #-}
 module ChurchLists where
-import Prelude(($))
+import Prelude(($), error)
 import ChurchBools
+import ChurchCombs
 
 {-Church List Type-}
-type ChL a = forall r. r -> (a -> r -> r) -> r
+type ChL a = forall r. (a -> r -> r) -> r -> r
 
 {-Church Lists-}
 nil :: ChL a
@@ -18,7 +19,7 @@ isnil :: ChL a -> ChB
 isnil = \l -> l (\h t -> false) true
 
 head :: ChL a -> a
-head = \l -> l true false
+head = \l -> l const (error "")
 
 tail :: ChL a -> ChL a
 tail = \l c n -> l (\h t g -> g h $ t c) (const n) (const id)
