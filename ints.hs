@@ -1,4 +1,4 @@
-{-# LANGUAGE ImpredicativeTypes #-}
+{-# LANGUAGE ImpredicativeTypes,TypeApplications #-}
 module ChurchInts where
 import Prelude(Integer, IO, ($), print, (-), map, (<), (!!))
 import ChurchBools
@@ -7,7 +7,7 @@ import ChurchNats
 import ChurchPairs
 
 {-Church Integer Type-}
-type ChI = ChP ChN ChN
+type ChI = (ChN -> ChN -> ChN) -> ChN
 
 {-Church Integers-}
 zeroI :: ChI

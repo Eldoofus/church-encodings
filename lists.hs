@@ -1,6 +1,6 @@
 {-# LANGUAGE ImpredicativeTypes,ScopedTypeVariables #-}
 module ChurchLists where
-import Prelude(($), error)
+import Prelude(($), error, IO, print, Show)
 import ChurchBools
 import ChurchCombs
 
